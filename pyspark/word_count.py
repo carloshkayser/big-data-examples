@@ -14,6 +14,7 @@ def calculate_avg_temp_pyspark_pandas():
     spark = SparkSession.builder \
         .appName("AvgTempPandasAPI") \
         .master("local[*]") \
+        .config("spark.sql.ansi.enabled", "false") \
         .getOrCreate()
 
     input_file = "data/city_temperature.csv"
@@ -21,18 +22,18 @@ def calculate_avg_temp_pyspark_pandas():
     try:
         # 2. Read the CSV file directly with Spark
         print(f"Reading data from '{input_file}'...")
-        ps_df = ps.read_csv(input_file, header=True, inferSchema=True)
+        ps_df = ps.read_csv(input_file)
 
         # 3. Processing and Transformation (Equivalent to the Map phase)
         ps_df['date'] = ps.to_datetime(ps_df['datetime']).dt.date
-        ps_df['temp'] = ps_df['temp'].astype(float)
+        ps_df['temperature'] = ps_df['temperature'].astype(float)
 
         # 4. Grouping and Aggregation (Equivalent to the Shuffle and Reduce phases)
         # The .groupby() groups the data by city and date (Shuffle).
         # The .agg() function applies the mean operation on each group (Reduce).
         print("Calculating the average temperature per city and day...")
         avg_temp_df = ps_df.groupby(['city', 'date']) \
-                           .agg(avg_temp=('temp', 'mean')) \
+                           .agg(avg_temp=('temperature', 'mean')) \
                            .reset_index()  # Converts group indexes into columns
 
         # 5. Sort the results for consistent display
@@ -45,6 +46,11 @@ def calculate_avg_temp_pyspark_pandas():
 
         print("\nAverage Temperature per City and Day (calculated with PySpark and Pandas API):")
         print(final_pandas_df.to_string())
+
+        # 6.1 Write the result to a CSV file
+        output_file = "avg_temp_pyspark_pandas.csv"
+        final_pandas_df.to_csv(output_file, index=False)
+        print(f"\nResults written to '{output_file}'")
 
     except AnalysisException:
         print(f"Error: The file or directory '{input_file}' was not found.")

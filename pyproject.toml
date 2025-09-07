@@ -1,0 +1,20 @@
+[project]
+name = "big-data-examples"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Carlos Kayser", email = "carloshkayser@gmail.com"}
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+pyspark = "4.0.1"
+mrjob = "0.7.4"
+pandas = "^2.3.2"
+pyarrow = "^11.0.0"
+numpy = "<2.0.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
