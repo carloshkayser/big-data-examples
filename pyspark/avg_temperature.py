@@ -2,7 +2,7 @@ from pyspark.sql.utils import AnalysisException
 from pyspark.sql import SparkSession
 
 import pyspark.pandas as ps
-
+import os
 
 def calculate_avg_temp_pyspark_pandas():
     """
@@ -48,7 +48,8 @@ def calculate_avg_temp_pyspark_pandas():
         print(final_pandas_df.to_string())
 
         # 6.1 Write the result to a CSV file
-        output_file = "avg_temp_pyspark_pandas.csv"
+        output_file = "output/avg_temp_pyspark_pandas.csv"
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         final_pandas_df.to_csv(output_file, index=False)
         print(f"\nResults written to '{output_file}'")
 

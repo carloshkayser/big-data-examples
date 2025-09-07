@@ -50,5 +50,5 @@ class MRCityTempAvg(MRJob):
 if __name__ == '__main__':
     MRCityTempAvg.run()
 
-# python mrjob/avg_temperature.py data/city_temperature.csv > output.txt
+# python mrjob/avg_temperature.py data/city_temperature.csv > output/output.txt
 # python mrjob/avg_temperature.py -r hadoop hdfs://path/to/city_temperature.csv
