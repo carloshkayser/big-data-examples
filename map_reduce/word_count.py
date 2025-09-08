@@ -37,3 +37,12 @@ if __name__ == "__main__":
     for word, count in result:
         if count > 100:
             print(f"{word}: {count}")
+    
+    # Write results to CSV
+    output_file = "output/word_count_map_reduce.csv"
+    with open(output_file, "w") as f:
+        f.write("word,count\n")
+        for word, count in result:
+            f.write(f"{word},{count}\n")
+
+    print(f"\nResults written to '{output_file}'")
